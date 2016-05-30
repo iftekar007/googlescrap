@@ -34,13 +34,10 @@ if(strlen($s[9])>4) {
         $in = str_replace(' ','+',$in); // space is a +
         $url  = "https://www.google.co.in/search?q=site%3A".$x['Location'][1];
 
-        print $url."<br>";
+        print $url."<br>"; echo 8989;
 
 
-
-
-
-        $html = file_get_html($url);
+       /* $html = file_get_html($url);
         //print_r($html);
         $i=0;
         $linkObjs = $html->find('h3.r a');
@@ -65,7 +62,7 @@ if(strlen($s[9])>4) {
             echo '<p>Title: ' . $title . '<br />';
             echo 'Link: ' . $link . '<br />';
             echo 'Description: ' . $descr . '</p>';
-        }
+        }*/
 
         //print_r($y);
         echo "<br/>";
