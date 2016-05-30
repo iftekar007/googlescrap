@@ -35,15 +35,18 @@ if(strlen($s[9])>4) {
         $url  = "https://www.google.co.in/search?q=site%3A".$x['Location'][1];
 
         print $url."<br>";
-        echo file_get_contents('https://www.google.co.in/search?q=site%3Ahttp://www.ripoffreport.com/r/CHECK-INTO-CASH-OREGON/PORTLAND-Oregon-97233/CHECK-INTO-CASH-STATE-OF-OREGON-NOW-OUT-OF-BUSINESS-THEY-HAVE-BEEN-SELLING-YOUR-PHONE-NUM-320574');
-        echo file_get_contents($url);
-        //$html = file_get_html($url);
+
+
+
+
+
+        $html = file_get_html($url);
         //print_r($html);
         $i=0;
-   /*     $linkObjs = $html->find('h3.r a');
+        $linkObjs = $html->find('h3.r a');
         foreach ($linkObjs as $linkObj) {
             echo 99;
-            print_r($linkObj);
+            //print_r($linkObj);
             echo "<br/>";
             $title = trim($linkObj->plaintext);
             $link  = trim($linkObj->href);
@@ -62,7 +65,7 @@ if(strlen($s[9])>4) {
             echo '<p>Title: ' . $title . '<br />';
             echo 'Link: ' . $link . '<br />';
             echo 'Description: ' . $descr . '</p>';
-        }*/
+        }
 
         //print_r($y);
         echo "<br/>";
