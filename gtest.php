@@ -1,80 +1,122 @@
 <?php
 set_time_limit(0);
+
+$servername = "localhost";
+$username = "root";
+$password = "123456";
+$dbname = "test";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password,$dbname );
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+//echo "Connected successfully";
+//exit;
 include('csvs/simple_html_dom.php');
+$l=2000;
+//echo $sql = "SELECT * FROM ripoff_urls limit   $l  ($l + 10) ";
+while($l<767118) {
+//while($l<112) {
 
-$file = fopen("csvs/Ripoff_Report_URLs.csv","r");
+    $k=$l+1000;
+    echo $sql = "SELECT * FROM ripoff_urls limit  $l , 10000";
+    //exit;
+    $result = $conn->query($sql);
+print_r($result->num_rows);
+    echo "<br/>";
+    if ($result->num_rows > 0) {
+        // output data of each row
+        $i=0;
+        while ($row = $result->fetch_assoc()) {
+            //echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
 
-while(! feof($file))
-{
-    echo '<pre>';
-    $s=(fgetcsv($file));
-    //print_r($s[9]);
 
-if(strlen($s[9])>4) {
-    $mylink = "http://ripoffreport.com/" . $s[9];
-    echo "<br/>";
-    echo "<br/>";
-    echo "<br/>";
-    echo "<br/>";
-    echo "<br/>";
-    echo "<br/>";
+            echo '<pre>';
+            //$s = (fgetcsv($file));
+            //print_r($s[9]);
+
+            if (strlen($row['url']) > 4) {
+               echo  $mylink = "http://ripoffreport.com/" . $row['url'];
+                echo "<br/>";
+                echo "<br/>";
+                echo $i++;
+                echo "<br/>";
+                echo "<br/>";
+                echo "<br/>";
+                echo "<br/>";
 
 ///print_r(get_headers($mylink));
 
 //print_r(get_headers($mylink, 1));
-    $x = (get_headers($mylink, 1));
+               $x = (get_headers($mylink, 1));
+                //$x = '';
 //print_r($x['Location'][0]);
-    //print_r($x['Location'][1]);
-    if(strlen($x['Location'][1])>5){
+                print_r($x['Location'][1]);
+                echo "<br/>";
+                if (strlen($x['Location'][1]) > 5) {
 
-        //echo "https://www.google.co.in/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=site%3A".$x['Location'][1];
+                    //echo "https://www.google.co.in/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=site%3A".$x['Location'][1];
 
-        //$y=url_get_contents("https://www.google.co.in/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=site%3A".$x['Location'][1]);
-        $in = $x['Location'][1];
-        $in = str_replace(' ','+',$in); // space is a +
-        $url  = "https://www.google.co.in/search?q=site%3A".$x['Location'][1];
+                    //$y=url_get_contents("https://www.google.co.in/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=site%3A".$x['Location'][1]);
+                    $in = $x['Location'][1];
+                    $in = str_replace(' ', '+', $in); // space is a +
+                    $url = "https://www.google.co.in/search?q=site%3A" . $x['Location'][1];
 
-        print $url."<br>"; echo 8989;
+                    print $url . "<br>";
 
 
-       /* $html = file_get_html($url);
-        //print_r($html);
-        $i=0;
-        $linkObjs = $html->find('h3.r a');
-        foreach ($linkObjs as $linkObj) {
-            echo 99;
-            //print_r($linkObj);
-            echo "<br/>";
-            $title = trim($linkObj->plaintext);
-            $link  = trim($linkObj->href);
-            print_r($title);
-            print_r($link);
+                    /* $html = file_get_html($url);
+                     //print_r($html);
+                     $i=0;
+                     $linkObjs = $html->find('h3.r a');
+                     foreach ($linkObjs as $linkObj) {
+                         echo 99;
+                         //print_r($linkObj);
+                         echo "<br/>";
+                         $title = trim($linkObj->plaintext);
+                         $link  = trim($linkObj->href);
+                         print_r($title);
+                         print_r($link);
 
-            // if it is not a direct link but url reference found inside it, then extract
-            if (!preg_match('/^https?/', $link) && preg_match('/q=(.+)&amp;sa=/U', $link, $matches) && preg_match('/^https?/', $matches[1])) {
-                $link = $matches[1];
-            } else if (!preg_match('/^https?/', $link)) { // skip if it is not a valid link
-                continue;
+                         // if it is not a direct link but url reference found inside it, then extract
+                         if (!preg_match('/^https?/', $link) && preg_match('/q=(.+)&amp;sa=/U', $link, $matches) && preg_match('/^https?/', $matches[1])) {
+                             $link = $matches[1];
+                         } else if (!preg_match('/^https?/', $link)) { // skip if it is not a valid link
+                             continue;
+                         }
+
+                         $descr = $html->find('span.st',$i); // description is not a child element of H3 thereforce we use a counter and recheck.
+                         $i++;
+                         echo '<p>Title: ' . $title . '<br />';
+                         echo 'Link: ' . $link . '<br />';
+                         echo 'Description: ' . $descr . '</p>';
+                     }*/
+
+                    //print_r($y);
+                    echo "<br/>";
+                    echo "<br/>";
+                    echo "<br/>";
+                    echo "<br/>";
+                    echo "<br/>";
+                    echo "<br/>";
+
+
+                } else {
+
+
+                    echo $sqlu = "update  ripoff_urls set url_status='notfound url' where id = " .$row['id'];
+                    $conn->query($sqlu);
+
+                }
+
             }
-
-            $descr = $html->find('span.st',$i); // description is not a child element of H3 thereforce we use a counter and recheck.
-            $i++;
-            echo '<p>Title: ' . $title . '<br />';
-            echo 'Link: ' . $link . '<br />';
-            echo 'Description: ' . $descr . '</p>';
-        }*/
-
-        //print_r($y);
-        echo "<br/>";
-        echo "<br/>";
-        echo "<br/>";
-        echo "<br/>";
-        echo "<br/>";
-        echo "<br/>";
+            echo '</pre>';
+        }
     }
-
-}
-    echo '</pre>';
+    $l+=10000;
 }
 
 fclose($file);
@@ -103,7 +145,7 @@ echo '</pre>';*/
 
 
 
-$mylink="http://ripoffreport.com//Cash-Services/CHECK-INTO-CASH-OREG/check-into-cash-state-of-orego-G8E5D.htm
+/*$mylink="http://ripoffreport.com//Cash-Services/CHECK-INTO-CASH-OREG/check-into-cash-state-of-orego-G8E5D.htm
 /Cash-Services/Check-Into-Cash/check-into-cash-ripoff-omaha-n-2W97D.htm";
 
 $url = $mylink;
@@ -116,7 +158,7 @@ $url = 'http://www.example.com';
 //print_r(get_headers($mylink, 1));
 $x=(get_headers($mylink, 1));
 //print_r($x['Location'][0]);
-print_r($x['Location'][1]);
+print_r($x['Location'][1]);*/
 
 
 
@@ -215,55 +257,6 @@ function file_get_contents_curl($url) {
     return $data;
 }
 
-//Set query if any passed
 
-
-
-$result = array();
-
-foreach($html->find('div.rc') as $g)
-{
-    /*
-    each search results are in a list item with a class name 'g'
-    we are seperating each of the elements within, into an array
-
-    Titles are stored within <h3><a...>{title}</a></h3>
-    Links are in the href of the anchor contained in the <h3>...</h3>
-    Summaries are stored in a div with a classname of 's'
-    */
-
-    print_r($g);
-    $h3 = $g->find('h3.r', 0);
-    $s = $g->find('div.s', 0);
-    $a = $h3->find('a', 0);
-    $result[] = array('title' => strip_tags($a->innertext),
-        'link' => $a->href,
-        'description' => strip_tags_content($s->innertext));
-}
-
-if($_GET['serialize'] == '1')
-{
-    /*
-    if you pass serialize=1 to the script
-    it will echo out a serialized string
-    which can be unserialized back to an
-    array on a receiving script
-    */
-    echo serialize($result);
-}
-else
-{
-    /*
-    Otherwise it prints out the array structure so that it
-    is more human readible. You could instead perform a
-    foreach loop on the variable $result so that you can
-    organize the html output, or insert the data into a database
-    */
-    echo "<textarea style='width: 1024px; height: 600px;'>";
-    print_r($result);
-    echo "</textarea>";
-}
-//Cleans up the memory
-$html->clear(); exit();
 
 ?>
